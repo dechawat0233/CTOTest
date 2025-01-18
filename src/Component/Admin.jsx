@@ -1,29 +1,21 @@
 import '../App.css'
-import React, { useState } from 'react';
-import { Search, Users, Armchair, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import SeatRemain from './SeatRemain';
+import AllSeats from './Allseats';
+import SetSeats from './SetSeats';
+import { useAppContext } from '../AppContext';
 
-function Admin({ users, seats, setSeats }) {
-    const handleInputChange = (e) => {
-        setSeats(e.target.value); // อัปเดตค่า seats ตามที่ผู้ใช้กรอก
-    };
+function Admin() {
+    const { users, seats, setSeats } = useAppContext();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        document.title = "แอดมิน";
+    }, []);
 
-        if (parseInt(seats) < 0) {
-            alert('จำนวนที่นั่งไม่สามารถน้อยกว่าศูนย์ได้');
-            return; 
-        }
-
-        if (seats < users.length) {
-            alert("มีคนลงทะเบียนมากกว่าที่กำหนดไว้");
-        } else {
-            alert("อัพเดทสำเร็จ");
-        }
-    };
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const [sortAscending, setSortAscending] = useState(true); 
-    const [filterText, setFilterText] = useState(''); 
+    const [sortAscending, setSortAscending] = useState(true);
+    const [filterText, setFilterText] = useState('');
 
     const filteredUsers = users.filter(user =>
         user.Fname.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -58,39 +50,14 @@ function Admin({ users, seats, setSeats }) {
         <div className="container mx-auto p-4 max-w-6xl">
             <div className="content flex">
                 <section className="w-full sm:w-1/2 px-4 py-6 border border-gray-200 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-2 flex items-center">
-                        <Armchair className="h-5 w-5 text-blue-600 mr-2" />ที่นั่งเหลืออยู่</label>
-                    <span className="text-lg text-blue-600">{seats - users.length} ที่นั่ง</span>
+                    <SeatRemain />
                 </section>
                 <section className="w-full sm:w-1/2 px-4 py-6 border border-gray-200 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-2 flex items-center">
-                        <Users className="h-5 w-5 text-green-600 mr-2" />
-                        คนที่ลงทะเบียนทั้งหมด
-                    </label>
-
-                    <span className="text-lg text-green-600">{users.length} คน</span>
+                    <AllSeats />
                 </section>
             </div>
             <section className="content border border-gray-200 rounded-lg">
-                <form className="flex" onSubmit={handleSubmit}>
-                    <div className="w-full sm:w-1/4 px-2 py-2">
-                        <label className="block text-gray-700 font-semibold mb-2 ">กำหนดจำนวนที่นั่ง</label>
-                        <input
-                            id="setSeats"
-                            placeholder="กำหนดจำนวนที่นั่ง"
-                            type="number"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            value={seats}
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className="w-full sm:w-auto px-2 py-2 flex justify-start mt-4">
-                        <button type="submit" className="bg-[#D0DF51] text-black px-4 py-2 rounded-lg h-11 mt-auto border border-gray-500">
-                            บันทึก
-                        </button>
-
-                    </div>
-                </form>
+                <SetSeats />
             </section>
             <section className="content border border-gray-200 rounded-lg">
                 <div className="flex justify-between items-end">

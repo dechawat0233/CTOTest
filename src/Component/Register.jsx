@@ -1,64 +1,33 @@
 import '../App.css'
-import React, { useState } from 'react';
-import { Search, Users, Armchair, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import SeatRemain from './SeatRemain';
+import AllSeats from './Allseats';
+import RegistForm from './RegistForm';
+import { useAppContext } from '../AppContext';
 
-function Register({ users, setUsers, seats }) {
+function Register() {
+    const { users } = useAppContext();
 
-    const [formData, setFormData] = useState({
-        Fname: '',
-        Lname: '',
-        phone: ''
-    });
+    useEffect(() => {
+        document.title = "ลงทะเบียน";
+    }, []);
+
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-    const [sortAscending, setSortAscending] = useState(true); 
-    const [filterText, setFilterText] = useState(''); 
-    const [isClicked, setIsClicked] = useState(false);
-
-    const handleInputChange = (e) => {
-        const { id, value } = e.target;
-        setFormData({
-            ...formData,
-            [id]: value
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (users.length < seats) {
-            setUsers([
-                ...users,
-                {
-                    Fname: formData.Fname,
-                    Lname: formData.Lname,
-                    phone: formData.phone,
-                },
-            ]);
-            setFormData({
-                Fname: '',
-                Lname: '',
-                phone: '',
-            });
-        } else {
-            alert('ที่นั่งเต็มแล้ว');
-        }
-    };
+    const [sortAscending, setSortAscending] = useState(true);
+    const [filterText, setFilterText] = useState('');
 
     const filteredUsers = users.filter(user =>
         user.Fname.toLowerCase().includes(filterText.toLowerCase()) ||
         user.Lname.toLowerCase().includes(filterText.toLowerCase())
     );
-    
+
 
     const sortedUsers = filteredUsers.sort((a, b) => {
         if (sortAscending) {
             return a.Fname.localeCompare(b.Fname);
         }
     });
-
-    const toggleSort = () => {
-        setSortAscending(!sortAscending);
-        setIsClicked(!isClicked);
-    };
 
     const handleSort = (key) => {
         let direction = 'asc';
@@ -81,51 +50,15 @@ function Register({ users, setUsers, seats }) {
         <div className="container mx-auto p-4 max-w-6xl">
             <div className="content flex">
                 <section className="w-full sm:w-1/2 px-4 py-6 border border-gray-200 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-2 flex items-center">
-                        <Armchair className="h-5 w-5 text-blue-600 mr-2" />ที่นั่งเหลืออยู่</label>
-                    <span className="text-lg text-blue-600">{seats - users.length} ที่นั่ง</span>
+                    <SeatRemain />
                 </section>
                 <section className="w-full sm:w-1/2 px-4 py-6 border border-gray-200 rounded-lg">
-                    <label className="block text-gray-700 font-semibold mb-2 flex items-center">
-                        <Users className="h-5 w-5 text-green-600 mr-2" />
-                        คนที่ลงทะเบียนทั้งหมด
-                    </label>
-
-                    <span className="text-lg text-green-600">{users.length} คน</span>
+                    <AllSeats />
                 </section>
             </div>
             <section className="content border border-gray-200 rounded-lg">
-                <form className="flex flex-col sm:flex-row" onSubmit={handleSubmit}>
-                    <div className="w-full sm:w-1/4 px-2 py-2">
-                        <label className="block text-gray-700 font-semibold mb-2">ชื่อ</label>
-                        <input id="Fname" placeholder="ชื่อ" type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={formData.Fname}
-                            onChange={handleInputChange} required />
-                    </div>
-                    <div className="w-full sm:w-1/4 px-2 py-2">
-                        <label className="block text-gray-700 font-semibold mb-2">นามสกุล</label>
-                        <input id="Lname" placeholder="นามสกุล" type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={formData.Lname}
-                            onChange={handleInputChange} required />
-                    </div>
-                    <div className="w-full sm:w-1/4 px-2 py-2">
-                        <label className="block text-gray-700 font-semibold mb-2">เบอร์โทร</label>
-                        <input id="phone" placeholder="เบอร์โทร" type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg" value={formData.phone}
-                            pattern="[0-9]*"
-                            inputMode="numeric"
-                            maxLength="10"
-                            onInput={(e) => {
-                                e.target.value = e.target.value.replace(/\D/g, "");
-                            }}
-                            onChange={handleInputChange} required />
-                    </div>
-                    <div className="w-full sm:w-auto px-2 py-2 flex justify-start mt-4">
-                        <button type="submit" className="bg-[#D0DF51] text-black px-4 py-2 rounded-lg h-11 mt-auto border border-gray-500">
-                            ลงชื่อ
-                        </button>
-                    </div>
-                </form>
+                <RegistForm />
             </section>
-            
-
             <section className="content border border-gray-200 rounded-lg">
                 <div className="flex justify-between items-end">
                     <div className="w-full px-2 py-2">
@@ -143,7 +76,6 @@ function Register({ users, setUsers, seats }) {
 
                     </div>
                 </div>
-
             </section>
             <section className="content border border-gray-200 rounded-lg px-3 py-3">
                 <div className="overflow-x-auto">

@@ -5,24 +5,21 @@ import './index.css';
 import Menu from './menu/menu.jsx';
 import Register from './Component/Register.jsx';
 import Admin from './Component/Admin.jsx';
+import SeatRemain from './Component/SeatRemain.jsx';
+import { AppProvider } from './AppContext';
 
 const Main = () => {
-  const [users, setUsers] = useState([
-    { Fname: 'John', Lname: 'Doe', phone: '1234567895' },
-    { Fname: 'Jane', Lname: 'Smith', phone: '9876543210' },
-  ]);
-    const [seats, setSeats] = useState(10); 
-
   return (
     <StrictMode>
-      <Router>
-        <Menu />
-        <Routes>
-          {/* ส่ง users และ setUsers เป็น props ให้ Register */}
-          <Route path="/register" element={<Register users={users} setUsers={setUsers} seats={seats} />} />
-          <Route path="/admin" element={<Admin users={users} seats={seats} setSeats={setSeats}/>} />
-        </Routes>
-      </Router>
+      <AppProvider>
+        <Router>
+          <Menu />
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </Router>
+      </AppProvider>
     </StrictMode>
   );
 };
