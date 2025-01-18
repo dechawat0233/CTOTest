@@ -1,0 +1,32 @@
+input {
+  border-radius: 8px;
+  border: 2px solid #4CAF50; 
+  background-color: #f0f0f0; 
+  color: #333;  
+}
+
+ui {
+  border-radius: 8px;
+ 
+}
+
+.flex-row-center {
+  display: flex;
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+  gap: 16px;
+  /* Space between inputs */
+}
+
+body{
+  background-color: #f9fafb;
+}
+
+section {
+  border-radius: 8px;
+  background-color: white;
+  margin: 5px;
+  padding: 5px;
+}
