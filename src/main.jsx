@@ -5,7 +5,6 @@ import './index.css';
 import Menu from './menu/menu.jsx';
 import Register from './Component/Register.jsx';
 import Admin from './Component/Admin.jsx';
-import SeatRemain from './Component/SeatRemain.jsx';
 import { AppProvider } from './AppContext';
 
 const Main = () => {
